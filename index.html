@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ten Virtues - Exploring Human Excellence</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Animation Library for subtle interactions -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-navy: #1a1a2e;
+            --secondary-gold: #d4af37;
+            --tertiary-sage: #9caf88;
+            --text-charcoal: #2c2c2c;
+            --text-cream: #f8f6f0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary-navy) 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: var(--text-cream);
+        }
+        
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(45deg, var(--secondary-gold), #f4e4bc, var(--secondary-gold));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .virtue-card {
+            background: rgba(156, 175, 136, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(156, 175, 136, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        
+        .virtue-card:hover {
+            transform: translateY(-8px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+            border-color: var(--secondary-gold);
+            background: rgba(156, 175, 136, 0.2);
+        }
+        
+        .modal-backdrop {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(8px);
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, rgba(248, 246, 240, 0.95), rgba(244, 242, 236, 0.95));
+            color: var(--text-charcoal);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .virtue-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--secondary-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 1rem;
+        }
+        
+        .particle-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .typing-cursor {
+            color: var(--secondary-gold);
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particle-container" class="particle-bg"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-black bg-opacity-20 backdrop-blur-md border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-center items-center h-16">
+                <h1 class="text-xl font-semibold text-gray-100">The Ten Virtues</h1>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center pt-16 px-4 relative">
+        <!-- Decorative hero image providing an abstract background of interconnected virtues -->
+        <img src="resources/hero-virtues.png" alt="Abstract virtues background" class="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none" />
+        <div class="text-center max-w-4xl mx-auto relative">
+            <h1 class="hero-title text-6xl md:text-8xl font-bold mb-6">
+                The Ten Virtues
+            </h1>
+            <!-- Static tagline instead of typewriter effect for better compatibility -->
+            <p class="text-xl md:text-2xl text-gray-300 mb-4">
+                Exploring the foundations of human excellence
+            </p>
+            <p class="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                Each virtue represents a pathway to personal growth and deeper understanding.
+            </p>
+            <div class="mt-12">
+                <!-- Converted button to an anchor element with a fallback href for environments where JS might fail. -->
+                <a href="#virtues-section" onclick="scrollToVirtues(); return false;" role="button" tabindex="0" class="bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg inline-block">
+                    Discover the Virtues
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Virtues Grid Section -->
+    <!-- Added relative positioning and decorative background image using our generated abstract art. The image sits
+         behind the content with low opacity and pointer-events disabled so it doesn’t interfere with interaction. -->
+    <section id="virtues-section" class="py-20 px-4 relative overflow-hidden">
+        <img src="resources/generated-abstract.png" alt="Abstract virtues illustration" class="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none" />
+        <div class="max-w-7xl mx-auto relative">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Discover Each Virtue</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Click on any virtue to explore its role, function, and the fundamental components 
+                    that make it essential to human flourishing.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                <!-- Critical Thinking -->
+                <div class="virtue-card rounded-xl p-6 text-center scroll-reveal" onclick="openModal('critical-thinking')">
+                    <div class="virtue-icon">🧠</div>
+                    <h3 class="text-xl font-semibold mb-3 text-white">Critical Thinking</h3>
+                    <p class="text-sm text-gray-300">Clear-thinking evaluator that sorts truth from error and removes bias from judgments</p>
+                </div>
+                
+                <!-- Sense-Making -->
+                <div class="virtue-card rounded-xl p-6 text-center scroll-reveal" onclick="openModal('sense-making')">
+                    <div class="virtue-icon">🧩</div>
+                    <h3 class="text-xl font-semibold mb-3 text-white">Sense-Making</h3>
+                    <p class="text-sm text-gray-300">Coherence builder that turns scattered information into structured understanding</p>
+                </div>
+                
+                <!-- Self-Control -->
+                <div class="virtue-card rounded-xl p-6 text-center scroll-reveal" onclick="openModal('self-control')">
+                    <!-- Updated icon: meditation figure better represents self‑control and composure -->
+                    <div class="virtue-icon">🧘</div>
+                    <h3 class="text-xl font-semibold mb-3 text-white">Self-Control</h3>
+                    <p class="text-sm text-gray-300">Action stabilizer that directs attention and maintains long-term focus</p>
+                </div>
+                
+                <!-- Fairness -->
+                <div class="virtue-card rounded-xl p-6 text-center scroll-reveal" onclick="openModal('fairness')">
+                    <div class="virtue-icon">⚖️</div>
+                    <h3 class="text-xl font-semibold mb-3 text-white">Fairness</h3>
+                    <p class="text-sm text-gray-300">Equal-treatment standard that ensures reciprocity and consistency</p>
+                </div>
+                
+                <!-- Impartiality -->
+                <div class="virtue-card rounded-xl p-6 text-center scroll-reveal" onclick="openModal('impartiality')">
+                    <div class="virtue-icon">👁️</div>
+                    <h3 class="text-xl font-semibold mb-3 text-white">Impartiality</h3>
+                    <p class="text-sm text-gray-300">Bias remover that grounds judgments in evidence and logic</p>
+                </div>
+                
+                <!-- Courage -->
+                <div class="virtue-card rounded-xl p-6 text-center scroll-reveal" onclick="openModal('courage')">
+                    <div class="virtue-icon">🦁</div>
+                    <h3 class="text-xl font-semibold mb-3 text-white">Courage</h3>
+                    <p class="text-sm text-gray-300">Discomfort engager that faces stress and difficulty through exposure</p>
+                </div>
+                
+                <!-- Self-Confidence -->
+                <div class="virtue-card rounded-xl p-6 text-center scroll-reveal" onclick="openModal('self-confidence')">
+                    <div class="virtue-icon">💪</div>
+                    <h3 class="text-xl font-semibold mb-3 text-white">Self-Confidence</h3>
+                    <p class="text-sm text-gray-300">Grounded self-belief built on real achievements and skill growth</p>
+                </div>
+                
+                <!-- Persistence -->
+                <div class="virtue-card rounded-xl p-6 text-center scroll-reveal" onclick="openModal('persistence')">
+                    <div class="virtue-icon">🏃</div>
+                    <h3 class="text-xl font-semibold mb-3 text-white">Persistence</h3>
+                    <p class="text-sm text-gray-300">Effort keeper that continues action during low motivation</p>
+                </div>
+                
+                <!-- Moderation -->
+                <div class="virtue-card rounded-xl p-6 text-center scroll-reveal" onclick="openModal('moderation')">
+                    <div class="virtue-icon">🎯</div>
+                    <h3 class="text-xl font-semibold mb-3 text-white">Moderation</h3>
+                    <p class="text-sm text-gray-300">Balance keeper that prevents extremes and manages energy</p>
+                </div>
+                
+                <!-- Self-Reflection -->
+                <div class="virtue-card rounded-xl p-6 text-center scroll-reveal" onclick="openModal('self-reflection')">
+                    <div class="virtue-icon">🪞</div>
+                    <h3 class="text-xl font-semibold mb-3 text-white">Self-Reflection</h3>
+                    <p class="text-sm text-gray-300">Primary integrator that turns experience into insight</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Modal -->
+    <div id="modal-backdrop" class="fixed inset-0 z-50 hidden modal-backdrop" onclick="closeModal()">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div id="modal-content" class="modal-content rounded-2xl shadow-2xl max-w-2xl w-full p-8 relative" onclick="event.stopPropagation()">
+                <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold">×</button>
+                <div id="modal-body">
+                    <!-- Dynamic content will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-4 border-t border-gray-700">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-gray-400">
+                © 2025 The Ten Virtues - Exploring Human Excellence
+            </p>
+        </div>
+    </footer>
+    
+    <!-- Embedded JavaScript to simplify deployment on platforms like GitHub Pages -->
+    <script>
+    // Virtues data with detailed information
+    const virtuesData = {
+        'critical-thinking': {
+            name: 'Critical Thinking',
+            icon: '🧠',
+            color: '#d4af37',
+            role: 'Clear-thinking evaluator',
+            function: 'Sorts truth from error and removes bias from judgments',
+            subcomponents: [
+                'Determines if a claim is consistently true, occasionally true, partially true, or false',
+                'Uses careful interpretation to correct cognitive biases',
+                'Dispels dogmas to gain a clear perspective'
+            ]
+        },
+        'sense-making': {
+            name: 'Sense-Making',
+            icon: '🧩',
+            color: '#9caf88',
+            role: 'Coherence builder',
+            function: 'Turns scattered information and viewpoints into structured understanding',
+            subcomponents: [
+                'Forms plausible, coherent explanations from diverse insights',
+                'Bases decisions on proven frameworks'
+            ]
+        },
+        'self-control': {
+            name: 'Self-Control',
+            icon: '🧘',
+            color: '#d4af37',
+            role: 'Action stabilizer',
+            function: 'Directs attention, regulates impulses, and maintains long-term focus',
+            subcomponents: [
+                'Uses delayed gratification as the default approach',
+                'Pursues goals without relying on pleasure-motivation',
+                'Maintains selective attention despite distractions'
+            ]
+        },
+        'fairness': {
+            name: 'Fairness',
+            icon: '⚖️',
+            color: '#9caf88',
+            role: 'Equal-treatment standard',
+            function: 'Ensures reciprocity and consistency in how others are treated',
+            subcomponents: [
+                'Treats people without favoritism',
+                'Repairs violations to maintain reciprocity',
+                'Enforces rules uniformly'
+            ]
+        },
+        'impartiality': {
+            name: 'Impartiality',
+            icon: '👁️',
+            color: '#d4af37',
+            role: 'Bias remover',
+            function: 'Grounds judgments in evidence and applies the same standards to everyone',
+            subcomponents: [
+                'Anchors reasoning in empirical facts through Bayesian logic',
+                'Maintains objectivity',
+                'Applies logic consistently across scenarios ("veil of ignorance")',
+                'Increases humility when information is limited'
+            ]
+        },
+        'courage': {
+            name: 'Courage',
+            icon: '🦁',
+            color: '#9caf88',
+            role: 'Discomfort engager',
+            function: 'Faces stress, fear, and difficulty through step-by-step exposure',
+            subcomponents: [
+                'Withstands discomfort gradually',
+                'Builds resilience through managed stressors'
+            ]
+        },
+        'self-confidence': {
+            name: 'Self-Confidence',
+            icon: '💪',
+            color: '#d4af37',
+            role: 'Grounded self-belief',
+            function: 'Builds identity around real achievements and skill growth',
+            subcomponents: [
+                'Self-efficacy built on verifiable achievements',
+                'Achievements woven into core identity',
+                'Models observed successes in new challenges',
+                'Views setbacks as skill deficits, not personal flaws'
+            ]
+        },
+        'persistence': {
+            name: 'Persistence',
+            icon: '🏃',
+            color: '#9caf88',
+            role: 'Effort keeper',
+            function: 'Continues action during low motivation and turns difficulty into progress',
+            subcomponents: [
+                'Maintains resilience during emotional flatlines',
+                'Treats obstacles as challenges',
+                'Builds progress through consistent daily actions',
+                'Monitors foresight and hindsight for guidance'
+            ]
+        },
+        'moderation': {
+            name: 'Moderation',
+            icon: '🎯',
+            color: '#d4af37',
+            role: 'Balance keeper',
+            function: 'Prevents extremes, manages energy, and allocates resources sustainably',
+            subcomponents: [
+                'Balances behavior between excess and deficiency',
+                'Supports nervous system recovery',
+                'Allocates time and energy using the Pareto principle',
+                'Monitors ego depletion'
+            ]
+        },
+        'self-reflection': {
+            name: 'Self-Reflection',
+            icon: '🪞',
+            color: '#9caf88',
+            role: 'Primary integrator and the system\'s adjustment center',
+            function: 'Turns experience into insight and corrects course through daily review',
+            subcomponents: [
+                'Daily introspection',
+                'Reduces experiences to simple if/then heuristics',
+                'Labels current emotion with one word'
+            ]
+        }
+    };
+
+    // Define the order in which virtues appear. This is used for navigation and progress indication
+    const virtueOrder = [
+        'critical-thinking',
+        'sense-making',
+        'self-control',
+        'fairness',
+        'impartiality',
+        'courage',
+        'self-confidence',
+        'persistence',
+        'moderation',
+        'self-reflection'
+    ];
+
+    // Initialize the application after DOM is ready
+    function initializeApp() {
+        initializeScrollReveal();
+        initializeCardEffects();
+        initializeModal();
+    }
+
+    function initializeScrollReveal() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all scroll-reveal elements
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Stagger the virtue cards animation
+        const virtueCards = document.querySelectorAll('.virtue-card');
+        virtueCards.forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.1}s`;
+        });
+    }
+
+    function initializeCardEffects() {
+        const cards = document.querySelectorAll('.virtue-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                anime({
+                    targets: this,
+                    scale: 1.05,
+                    rotateX: 5,
+                    rotateY: 5,
+                    duration: 300,
+                    easing: 'easeOutCubic'
+                });
+            });
+
+            card.addEventListener('mouseleave', function() {
+                anime({
+                    targets: this,
+                    scale: 1,
+                    rotateX: 0,
+                    rotateY: 0,
+                    duration: 300,
+                    easing: 'easeOutCubic'
+                });
+            });
+        });
+    }
+
+    function initializeModal() {
+        const modal = document.getElementById('modal-backdrop');
+        const modalContent = document.getElementById('modal-content');
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+        // Prevent modal content click from closing
+        modalContent.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
+
+    // Smooth scroll to virtues section
+    function scrollToVirtues() {
+        const virtuesSection = document.getElementById('virtues-section');
+        if (virtuesSection) {
+            virtuesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    // Open modal with virtue details
+    function openModal(virtueId) {
+        const virtue = virtuesData[virtueId];
+        if (!virtue) return;
+        const modal = document.getElementById('modal-backdrop');
+        const modalBody = document.getElementById('modal-body');
+        // Determine the current index within the virtue order to build progress and navigation
+        const totalVirtues = virtueOrder.length;
+        const currentIndex = virtueOrder.indexOf(virtueId);
+        const prevId = currentIndex > 0 ? virtueOrder[currentIndex - 1] : null;
+        const nextId = currentIndex < totalVirtues - 1 ? virtueOrder[currentIndex + 1] : null;
+        // Build progress indicator dots
+        const progressHtml = virtueOrder.map((id, i) => {
+            const isActive = i === currentIndex;
+            const dotColor = isActive ? virtue.color : '#d1d5db';
+            return `<span class="inline-block w-2 h-2 rounded-full mx-1" style="background: ${dotColor}"></span>`;
+        }).join('');
+        // Create modal content
+        modalBody.innerHTML = `
+            <div class="text-center mb-8">
+                <div class="virtue-icon mx-auto mb-4" style="background: ${virtue.color}">
+                    ${virtue.icon}
+                </div>
+                <h2 class="text-3xl font-bold mb-2" style="font-family: 'Playfair Display', serif; color: ${virtue.color}">
+                    ${virtue.name}
+                </h2>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">Role</h3>
+                    <p class="text-gray-600 leading-relaxed">${virtue.role}</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">Function</h3>
+                    <p class="text-gray-600 leading-relaxed">${virtue.function}</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Subcomponents</h3>
+                    <div class="space-y-3">
+                        ${virtue.subcomponents.map(component => `
+                            <div class="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                                <div class="w-2 h-2 rounded-full mt-2 flex-shrink-0" style="background: ${virtue.color}"></div>
+                                <p class="text-gray-600 text-sm leading-relaxed">${component}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-center items-center">
+                ${progressHtml}
+            </div>
+            <div class="mt-6 flex justify-between items-center text-sm">
+                ${prevId ? `<button onclick="openModal('${prevId}')" class="py-2 px-4 rounded border" style="color: ${virtue.color}; border-color: ${virtue.color}">← Previous</button>` : '<span></span>'}
+                ${nextId ? `<button onclick="openModal('${nextId}')" class="py-2 px-4 rounded border" style="color: ${virtue.color}; border-color: ${virtue.color}">Next →</button>` : '<span></span>'}
+            </div>
+            <div class="mt-8 text-center">
+                <button onclick="closeModal()" class="px-6 py-2 rounded-lg font-semibold transition-all duration-300" style="background: ${virtue.color}; color: white;">
+                    Close
+                </button>
+            </div>
+        `;
+        // Show modal
+        modal.classList.remove('hidden');
+        anime({ targets: modal, opacity: [0, 1], duration: 300, easing: 'easeOutCubic' });
+        anime({ targets: '#modal-content', scale: [0.8, 1], opacity: [0, 1], duration: 400, delay: 100, easing: 'easeOutCubic' });
+        anime({ targets: '#modal-body > *', translateY: [30, 0], opacity: [0, 1], duration: 500, delay: anime.stagger(100, { start: 200 }), easing: 'easeOutCubic' });
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('modal-backdrop');
+        anime({ targets: '#modal-content', scale: [1, 0.8], opacity: [1, 0], duration: 300, easing: 'easeInCubic' });
+        anime({ targets: modal, opacity: [1, 0], duration: 400, delay: 100, easing: 'easeInCubic', complete: function() {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        } });
+    }
+
+    // Expose functions globally so they can be used inline in HTML
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+    window.scrollToVirtues = scrollToVirtues;
+
+    // Initialize after page load
+    document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>
